@@ -1,6 +1,5 @@
 ﻿using EnjoyBookAPI.Models;
 using EnjoyBookAPI.Models.Request;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EnjoyBookAPI.Models;
@@ -7,7 +8,7 @@ namespace EnjoyBookAPI.Models;
 [Table("usuario")]
 public class Usuario
 {
-    [Column("id")]
+    [Key, Column("id")]
     public string Id { get; set; } = null!;
     [Column("rol")]
     public Roles Rol { get; set; }
@@ -21,4 +22,7 @@ public class Usuario
     public string Correo { get; set; } = null!;
     [Column("direccion")]
     public string Direccion { get; set; } = null!;
+
+    public virtual ICollection<Libro> Libros { get; set; }
+    public virtual ICollection<Renta> Rentas { get; set; }
 }

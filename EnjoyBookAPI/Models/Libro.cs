@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EnjoyBookAPI.Models;
@@ -7,8 +6,10 @@ namespace EnjoyBookAPI.Models;
 [Table("libro")]
 public class Libro
 {
-    [Column("id")]
+    [Key, Column("id")]
     public string Id { get; set; } = null!;
+    [Column("propietario")]
+    public string UsuarioId { get; set; } = null!;
     [Column("nombre")]
     public string Nombre { get; set; } = null!;
     [Column("autor")]
@@ -19,6 +20,15 @@ public class Libro
     public int Npag { get; set; }
     [Column("estado")]
     public Estados Estado { get; set; }
-    [Column("precio")]
-    public decimal Precio { get; set; }
+    [Column("esta_vendido")]
+    public bool EstaVendido { get; set; }
+    [Column("esta_rentado")]
+    public bool EstaRentado { get; set; }
+    [Column("precio_venta")]
+    public decimal PrecioVenta { get; set; }
+    [Column("precio_renta_dia")]
+    public decimal PrecioRentaDia { get; set; }
+
+    public virtual Usuario Usuario { get; set; }
+    public virtual ICollection<Renta> Rentas { get; set; }
 }

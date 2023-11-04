@@ -15,13 +15,13 @@ public partial class EnjoyBookDbContext : DbContext
     {
     }
 
-    public virtual DbSet<Libro> Libros { get; set; }
-
     public virtual DbSet<Usuario> Usuarios { get; set; }
+    public virtual DbSet<Libro> Libros { get; set; }
+    public virtual DbSet<Renta> Rentas { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost;Database=EnjoyBookDB;Username=postgres;Password=root");
+        => optionsBuilder.UseNpgsql("Host=dpg-cl37p8ot3kic73d8ls5g-a.oregon-postgres.render.com;Database=enjoy_book_db;Username=admin;Password=QkoIBXDpQXBVbkkw4FlpyAx3eJQVcFcg");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
