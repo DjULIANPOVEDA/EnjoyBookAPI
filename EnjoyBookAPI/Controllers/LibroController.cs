@@ -38,6 +38,9 @@ namespace EnjoyBookAPI.Controllers
             libro.EstaVendido = false;
             libro.EstaRentado = false;
 
+            await _context.Libros.AddAsync(libro);
+            await _context.SaveChangesAsync();
+
             return Ok(true);
         }
     }
