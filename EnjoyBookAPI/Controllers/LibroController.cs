@@ -66,5 +66,19 @@ namespace EnjoyBookAPI.Controllers
 
             return Ok(true);
         }
+
+        [HttpDelete("Eliminar/{libroId}")]
+        [Authorize]
+        public async Task<ActionResult<bool>> Eliminar( string libroId)   
+        {
+            var EliminarLibro = await _context.Libros.FindAsync(libroId);
+           _context.Libros.Remove(EliminarLibro);
+            await _context.SaveChangesAsync();
+            return Ok(true);
+        }
+
+
     }
 }
+// ALQUILAR 
+// VENDER
