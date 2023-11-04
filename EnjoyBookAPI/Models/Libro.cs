@@ -19,7 +19,7 @@ public class Libro
     [Column("npag")]
     public int Npag { get; set; }
     [Column("estado")]
-    public Estados Estado { get; set; }
+    public string Estado { get; set; } = null!;
     [Column("esta_vendido")]
     public bool EstaVendido { get; set; }
     [Column("esta_rentado")]

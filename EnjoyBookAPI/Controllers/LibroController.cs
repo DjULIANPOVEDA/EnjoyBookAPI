@@ -1,7 +1,10 @@
-﻿using EnjoyBookAPI.Models;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using EnjoyBookAPI.Models;
+using EnjoyBookAPI.Models.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace EnjoyBookAPI.Controllers
 {
@@ -10,16 +13,32 @@ namespace EnjoyBookAPI.Controllers
     public class LibroController : ControllerBase
     {
         private readonly EnjoyBookDbContext _context;
-        public LibroController(EnjoyBookDbContext context)
+        private readonly IMapper _mapper;
+        public LibroController(EnjoyBookDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
 
         [HttpGet]
-        public async Task<ActionResult<List<Libro>>> getAllLibros()
+        public async Task<ActionResult<List<Libro>>> GetAllLibros()
         {
             return Ok(await _context.Libros.ToListAsync());
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<bool>> InsertarLibro([FromBody] LibroRequest request)
+        {
+            var userId = User.FindFirst("UsuarioId")?.Value;
+            var libro = _mapper.Map<Libro>(request);
+            libro.Id = Guid.NewGuid().ToString();
+            libro.UsuarioId = userId;
+            libro.EstaVendido = false;
+            libro.EstaRentado = false;
+
+            return Ok(true);
         }
     }
 }

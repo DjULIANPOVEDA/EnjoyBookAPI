@@ -1,13 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace EnjoyBookAPI.Models.Request
+namespace EnjoyBookAPI.Models.Response
 {
-    public class RegisterRequest
+    public class UsuarioResponse
     {
+        public string Id { get; set; } = null!;
+        public Roles Rol { get; set; }
         public string Username { get; set; } = null!;
-        public string Password { get; set; } = null!;
         public string Telefono { get; set; } = null!;
         public string Correo { get; set; } = null!;
         public string Direccion { get; set; } = null!;
+        public string Token { get; set; } = null!;
     }
 }

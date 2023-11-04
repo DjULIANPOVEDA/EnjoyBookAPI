@@ -11,8 +11,8 @@ public class Usuario
     [Key, Column("id")]
     public string Id { get; set; } = null!;
     [Column("rol")]
-    public Roles Rol { get; set; }
-    [Column("userName")]
+    public string Rol { get; set; } = null!;
+    [Column("username")]
     public string Username { get; set; } = null!;
     [Column("password")]
     public string Password { get; set; } = null!;
