@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using EnjoyBookAPI.Models;
 using EnjoyBookAPI.Models.Request;
+using EnjoyBookAPI.Models.Response;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -22,9 +24,11 @@ namespace EnjoyBookAPI.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<List<Libro>>> GetAllLibros()
+        public async Task<ActionResult<List<LibroResponse>>> GetAllLibros()
         {
-            return Ok(await _context.Libros.ToListAsync());
+            var libros = await _context.Libros.ToListAsync();
+            var libroResult = _mapper.Map<List<LibroResponse>>(libros);
+            return Ok(libroResult);
         }
 
         [HttpPost]
@@ -37,8 +41,27 @@ namespace EnjoyBookAPI.Controllers
             libro.UsuarioId = userId;
             libro.EstaVendido = false;
             libro.EstaRentado = false;
-
             await _context.Libros.AddAsync(libro);
+            await _context.SaveChangesAsync();
+
+            return Ok(true);
+        }
+
+        [HttpPut("{libroId}")]
+        [Authorize]
+        public async Task<ActionResult<bool>> ActualizarLibro([FromBody] LibroRequest request, string libroId)
+        {
+            var libro = await _context.Libros.Where(l=>l.Id.Equals(libroId)).FirstOrDefaultAsync();
+            libro.Nombre = request.Nombre;
+            libro.Autor = request.Autor;
+            libro.Editor = request.Editor;
+            libro.Npag = request.Npag;
+            libro.Estado = request.Estado;
+            libro.PrecioVenta = request.PrecioVenta;
+            libro.PrecioRentaDia = request.PrecioRentaDia;
+
+            _context.Entry(libro).State = EntityState.Modified;
+
             await _context.SaveChangesAsync();
 
             return Ok(true);

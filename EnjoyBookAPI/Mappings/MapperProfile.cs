@@ -10,6 +10,7 @@ namespace EnjoyBookAPI.Mappings
         public MapperProfile()
         {
             CreateMap<LibroRequest, Libro>();
+            CreateMap<Libro, LibroResponse>();
             CreateMap<Usuario, UsuarioResponse>();
             CreateMap<RegisterRequest, Usuario>();
         }

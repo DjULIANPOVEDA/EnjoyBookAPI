@@ -6,7 +6,7 @@ namespace EnjoyBookAPI.Models.Response
     public class UsuarioResponse
     {
         public string Id { get; set; } = null!;
-        public Roles Rol { get; set; }
+        public string Rol { get; set; }
         public string Username { get; set; } = null!;
         public string Telefono { get; set; } = null!;
         public string Correo { get; set; } = null!;
