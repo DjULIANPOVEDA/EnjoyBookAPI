@@ -76,9 +76,26 @@ namespace EnjoyBookAPI.Controllers
             await _context.SaveChangesAsync();
             return Ok(true);
         }
+        [HttpPost ("alquilar")]
+        [Authorize]
+        public async Task<ActionResult<bool>> Alquilar(RentaRequest request)
+        {
+            var userId = User.FindFirst("UsuarioId")?.Value;
+            var renta = _mapper.Map<Renta>(request);
+            var libro = await _context.Libros.Where(l => l.Id.Equals(request.LibroId)).FirstOrDefaultAsync();
+            renta.Id = Guid.NewGuid().ToString();
+            renta.FechaRenta = DateTime.Now.ToString("u");
 
-
+            renta.UsuarioId = userId;
+            await _context.Rentas.AddAsync(renta);
+            libro.EstaRentado = true;
+            _context.Entry(libro).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return Ok(true);
+            
+        }
     }
 }
 // ALQUILAR 
 // VENDER
+// post 

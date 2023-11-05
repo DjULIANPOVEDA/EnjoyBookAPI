@@ -13,7 +13,7 @@ namespace EnjoyBookAPI.Models
         [Column("IdUsuario")]
         public string UsuarioId { get; set; } = null!;
         [Column("FechaRenta")]
-        public DateTime FechaRenta { get; set; }
+        public string FechaRenta { get; set; }
         [Column("DiasRenta")]
         public int DiasRenta { get; set; }
 

@@ -13,6 +13,7 @@ namespace EnjoyBookAPI.Mappings
             CreateMap<Libro, LibroResponse>();
             CreateMap<Usuario, UsuarioResponse>();
             CreateMap<RegisterRequest, Usuario>();
+            CreateMap<RentaRequest, Renta>();
         }
     }
 }
