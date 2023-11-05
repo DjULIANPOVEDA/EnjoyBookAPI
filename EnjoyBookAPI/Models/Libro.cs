@@ -28,7 +28,14 @@ public class Libro
     public decimal PrecioVenta { get; set; }
     [Column("precio_renta_dia")]
     public decimal PrecioRentaDia { get; set; }
+    [Column("fecha_venta")]
+    public string? FechaVenta { get; set; }
+    [Column("comprador")]
+    public string? CompradorId { get; set; }
+
 
     public virtual Usuario Usuario { get; set; }
     public virtual ICollection<Renta> Rentas { get; set; }
+    //public virtual Usuario Comprador{ get; set; }
+
 }

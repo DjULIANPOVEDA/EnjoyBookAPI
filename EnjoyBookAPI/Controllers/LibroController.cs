@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using System.Security.Claims;
 
 namespace EnjoyBookAPI.Controllers
@@ -91,9 +92,25 @@ namespace EnjoyBookAPI.Controllers
             libro.EstaRentado = true;
             _context.Entry(libro).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return Ok(true);
-            
+            return Ok(true);  
         }
+        [HttpPost("vender/{libroId}")]
+        [Authorize]
+        public async Task<ActionResult<bool>> Vender(string libroId )
+        {
+            var userId = User.FindFirst("UsuarioId")?.Value;
+            var libro =await _context.Libros.Where(l => l.Id.Equals(libroId)).FirstOrDefaultAsync();
+            libro.CompradorId = userId;
+            libro.FechaVenta = DateTime.Now.ToString("u");
+            _context.Entry(libro).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return Ok(true);
+
+        }
+            
+
+        
+
     }
 }
 // ALQUILAR 
