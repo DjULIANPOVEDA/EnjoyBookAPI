@@ -24,5 +24,8 @@ public class Usuario
     public string Direccion { get; set; } = null!;
 
     public virtual ICollection<Libro> Libros { get; set; }
+
+    public virtual ICollection<Libro> LibrosComprados { get; set; }
+    public virtual ICollection<Libro> LibrosAlquilados { get; set; }
     public virtual ICollection<Renta> Rentas { get; set; }
 }

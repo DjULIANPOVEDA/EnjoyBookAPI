@@ -6,15 +6,15 @@ namespace EnjoyBookAPI.Models
     [Table("renta")]
     public class Renta
     {
-        [Key, Column("Id")]
+        [Key, Column("id")]
         public string Id { get; set; } = null!;
-        [Column("IdLibro")]
+        [Column("idlibro")]
         public string LibroId { get; set; } = null!;
-        [Column("IdUsuario")]
+        [Column("idusuario")]
         public string UsuarioId { get; set; } = null!;
-        [Column("FechaRenta")]
+        [Column("fecharenta")]
         public string FechaRenta { get; set; }
-        [Column("DiasRenta")]
+        [Column("diasrenta")]
         public int DiasRenta { get; set; }
 
         public virtual Libro Libro { get; set; }

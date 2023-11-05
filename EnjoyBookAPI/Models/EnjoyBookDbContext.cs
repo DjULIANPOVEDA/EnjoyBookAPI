@@ -26,6 +26,19 @@ public partial class EnjoyBookDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Libro>()
+            .HasOne(l=>l.Usuario)
+            .WithMany(l=>l.Libros);
+
+        modelBuilder.Entity<Libro>()
+            .HasOne(l => l.Comprador)
+            .WithMany(l => l.LibrosComprados);
+
+        modelBuilder.Entity<Libro>()
+            .HasOne(l => l.Alquilador)
+            .WithMany(l => l.LibrosAlquilados);
+
+
+        modelBuilder.Entity<Libro>()
             .Property(e => e.Estado)
             .HasConversion<string>()
             .HasColumnName("estado")

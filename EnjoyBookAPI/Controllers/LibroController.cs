@@ -27,7 +27,17 @@ namespace EnjoyBookAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<LibroResponse>>> GetAllLibros()
         {
-            var libros = await _context.Libros.ToListAsync();
+            var libros = await _context.Libros.Where(l=>!l.EstaVendido && !l.EstaRentado).ToListAsync();
+            var libroResult = _mapper.Map<List<LibroResponse>>(libros);
+            return Ok(libroResult);
+        }
+
+        [HttpGet("Usuario")]
+        [Authorize]
+        public async Task<ActionResult<List<LibroResponse>>> GetAllLibrosByUser()
+        {
+            var userId = User.FindFirst("UsuarioId")?.Value;
+            var libros = await _context.Libros.Where(l=>l.UsuarioId.Equals(userId)).ToListAsync();
             var libroResult = _mapper.Map<List<LibroResponse>>(libros);
             return Ok(libroResult);
         }
@@ -52,7 +62,7 @@ namespace EnjoyBookAPI.Controllers
         [Authorize]
         public async Task<ActionResult<bool>> ActualizarLibro([FromBody] LibroRequest request, string libroId)
         {
-            var libro = await _context.Libros.Where(l=>l.Id.Equals(libroId)).FirstOrDefaultAsync();
+            var libro = await _context.Libros.Where(l => l.Id.Equals(libroId)).FirstOrDefaultAsync();
             libro.Nombre = request.Nombre;
             libro.Autor = request.Autor;
             libro.Editor = request.Editor;
@@ -70,47 +80,44 @@ namespace EnjoyBookAPI.Controllers
 
         [HttpDelete("Eliminar/{libroId}")]
         [Authorize]
-        public async Task<ActionResult<bool>> Eliminar( string libroId)   
+        public async Task<ActionResult<bool>> Eliminar(string libroId)
         {
             var EliminarLibro = await _context.Libros.FindAsync(libroId);
-           _context.Libros.Remove(EliminarLibro);
+            _context.Libros.Remove(EliminarLibro);
             await _context.SaveChangesAsync();
             return Ok(true);
         }
-        [HttpPost ("alquilar")]
+        [HttpPost("Alquilar")]
         [Authorize]
         public async Task<ActionResult<bool>> Alquilar(RentaRequest request)
         {
             var userId = User.FindFirst("UsuarioId")?.Value;
             var renta = _mapper.Map<Renta>(request);
             var libro = await _context.Libros.Where(l => l.Id.Equals(request.LibroId)).FirstOrDefaultAsync();
+            if (libro.EstaRentado || libro.EstaVendido) return Ok(false);
             renta.Id = Guid.NewGuid().ToString();
             renta.FechaRenta = DateTime.Now.ToString("u");
-
             renta.UsuarioId = userId;
             await _context.Rentas.AddAsync(renta);
             libro.EstaRentado = true;
+            libro.AlquiladorId = userId;
             _context.Entry(libro).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return Ok(true);  
+            return Ok(true);
         }
-        [HttpPost("vender/{libroId}")]
+        [HttpPost("Comprar/{libroId}")]
         [Authorize]
-        public async Task<ActionResult<bool>> Vender(string libroId )
+        public async Task<ActionResult<bool>> ComprarLibro(string libroId)
         {
             var userId = User.FindFirst("UsuarioId")?.Value;
-            var libro =await _context.Libros.Where(l => l.Id.Equals(libroId)).FirstOrDefaultAsync();
+            var libro = await _context.Libros.Where(l => l.Id.Equals(libroId)).FirstOrDefaultAsync();
+            if(libro.EstaRentado || libro.EstaVendido) return Ok(false);
             libro.CompradorId = userId;
             libro.FechaVenta = DateTime.Now.ToString("u");
             _context.Entry(libro).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return Ok(true);
-
         }
-            
-
-        
-
     }
 }
 // ALQUILAR 

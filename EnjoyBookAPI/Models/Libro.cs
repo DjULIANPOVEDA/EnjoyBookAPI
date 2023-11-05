@@ -32,10 +32,11 @@ public class Libro
     public string? FechaVenta { get; set; }
     [Column("comprador")]
     public string? CompradorId { get; set; }
-
-
+    [Column("alquilador")]
+    public string? AlquiladorId { get; set; }
     public virtual Usuario Usuario { get; set; }
     public virtual ICollection<Renta> Rentas { get; set; }
-    //public virtual Usuario Comprador{ get; set; }
+    public virtual Usuario Comprador { get; set; }
+    public virtual Usuario Alquilador { get; set; }
 
 }
