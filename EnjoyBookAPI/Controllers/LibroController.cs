@@ -25,10 +25,20 @@ namespace EnjoyBookAPI.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<List<LibroResponse>>> GetAllLibros()
+        public async Task<ActionResult<List<LibroResponse>>> GetAllLibrosFiltered()
         {
             var libros = await _context.Libros.Where(l=>!l.EstaVendido && !l.EstaRentado).ToListAsync();
             var libroResult = _mapper.Map<List<LibroResponse>>(libros);
+            return Ok(libroResult);
+        }
+
+        [HttpGet("all")]
+        [Authorize]
+        public async Task<ActionResult<List<LibroWithUserResponse>>> GetAllLibros()
+        {
+            var libros = await _context.Libros.Include(l => l.Usuario).ToListAsync();
+
+            var libroResult = _mapper.Map<List<LibroWithUserResponse>>(libros);
             return Ok(libroResult);
         }
 

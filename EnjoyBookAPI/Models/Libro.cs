@@ -35,8 +35,8 @@ public class Libro
     [Column("alquilador")]
     public string? AlquiladorId { get; set; }
     public virtual Usuario Usuario { get; set; }
-    public virtual ICollection<Renta> Rentas { get; set; }
-    public virtual Usuario Comprador { get; set; }
-    public virtual Usuario Alquilador { get; set; }
+    public virtual ICollection<Renta>? Rentas { get; set; }
+    public virtual Usuario? Comprador { get; set; }
+    public virtual Usuario? Alquilador { get; set; }
 
 }
