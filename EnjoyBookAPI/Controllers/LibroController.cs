@@ -107,10 +107,6 @@ namespace EnjoyBookAPI.Controllers
             return Ok(true);
 
         }
-            
-
-        
-
     }
 }
 // ALQUILAR 
