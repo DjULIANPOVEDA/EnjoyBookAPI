@@ -128,6 +128,55 @@ namespace EnjoyBookAPI.Controllers
             await _context.SaveChangesAsync();
             return Ok(true);
         }
+
+        [HttpGet("Reporte")]
+        [Authorize]
+        public async Task<ActionResult<ReporteResponse>> GenerarReporte()
+        {
+            var reporteResponse = new ReporteResponse();
+            var libros = await _context.Libros.ToListAsync();
+
+            var cantidadDisponible = 0;
+            var cantidadRentado = 0;
+            var cantidadVendido = 0;
+
+            var economico = 0;
+            var promedio = 0;
+            var costoso = 0;
+
+            var economicoA = 0;
+            var promedioA = 0;
+            var costosoA = 0;
+
+            var PocasPag = 0;
+            var promedioPag = 0;
+            var MuchasPag = 0;
+            foreach (var libro in libros)
+            {
+                if(libro.EstaRentado) cantidadRentado++;
+                else if(libro.EstaVendido) cantidadVendido++;
+                else cantidadDisponible++;
+
+                if (libro.PrecioVenta < 10000) economico++;
+                else if (libro.PrecioVenta < 100000) promedio++;
+                else costoso++;
+
+                if (libro.PrecioVenta < 2000) economicoA++;
+                else if (libro.PrecioVenta < 10000) promedioA++;
+                else costosoA++;
+
+                if (libro.Npag < 50) PocasPag++;
+                else if (libro.Npag < 200) promedioPag++;
+                else MuchasPag++;
+
+            }
+            reporteResponse.CantidadLibros = new {cantidadDisponible,  cantidadRentado, cantidadVendido };
+            reporteResponse.ValorVentaLibros = new { economico, promedio, costoso };
+            reporteResponse.ValorAlquilerLibros = new { economicoA, promedioA, costosoA };
+            reporteResponse.NumeroPaginas = new { PocasPag, promedioPag, MuchasPag };
+            return Ok(reporteResponse);
+        }                                            
+
     }
 }
 // ALQUILAR 
