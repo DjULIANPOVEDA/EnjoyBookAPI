@@ -15,7 +15,6 @@ namespace EnjoyBookAPI.Mappings
             CreateMap<Usuario, UsuarioResponse>();
             CreateMap<RegisterRequest, Usuario>();
             CreateMap<RentaRequest, Renta>();
-
             CreateMap<Libro,LibroRequest>();
         }
     }

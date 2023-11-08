@@ -123,6 +123,7 @@ namespace EnjoyBookAPI.Controllers
             var libro = await _context.Libros.Where(l => l.Id.Equals(libroId)).FirstOrDefaultAsync();
             if(libro.EstaRentado || libro.EstaVendido) return Ok(false);
             libro.CompradorId = userId;
+            libro.EstaVendido = true;
             libro.FechaVenta = DateTime.Now.ToString("u");
             _context.Entry(libro).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -161,8 +162,8 @@ namespace EnjoyBookAPI.Controllers
                 else if (libro.PrecioVenta < 100000) promedio++;
                 else costoso++;
 
-                if (libro.PrecioVenta < 2000) economicoA++;
-                else if (libro.PrecioVenta < 10000) promedioA++;
+                if (libro.PrecioRentaDia < 2000) economicoA++;
+                else if (libro.PrecioRentaDia < 10000) promedioA++;
                 else costosoA++;
 
                 if (libro.Npag < 50) PocasPag++;

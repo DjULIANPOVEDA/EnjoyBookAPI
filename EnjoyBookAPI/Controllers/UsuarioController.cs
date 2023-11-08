@@ -26,10 +26,14 @@ namespace EnjoyBookAPI.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<UsuarioResponse>> Login([FromBody] LoginRequest request)
         {
-            var user = await _context.Usuarios.Where(x => x.Username.ToLower().Equals(request.UserName.ToLower())).FirstOrDefaultAsync();
+            var user = await _context.Usuarios
+                .Where(x => x.Username.ToLower().Equals(request.UserName.ToLower()))
+                .FirstOrDefaultAsync();
+
             if (user == null) return BadRequest();
             if (!VerifyPassword(request.Password, user.Password)) return BadRequest();
             var userResponse = _mapper.Map<UsuarioResponse>(user);
+
             userResponse.Token = GenereteToken(user);
             return Ok(userResponse);
         }
